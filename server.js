@@ -1,15 +1,30 @@
-require('./config/db');
+require("./config/db");
 
-const app = require('express')();
-const UserRouter = require('./api/User');
+const dotenv = require("dotenv").config();
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const app = require("express")();
+const UserRouter = require("./api/User");
 
 const port = process.env.PORT || 3000;
 
-const bodyParser = require('express').json;
-app.use(bodyParser());
+//middleware
+app.use(express.json());
+/* app.use(helmet());
+app.use(morgan("common")); */
 
-app.use('/user', UserRouter);
+// for parsing application/json
+app.use(bodyParser.json());
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+//form-urlencoded
+
+app.use(cors());
+
+app.use("/user", UserRouter);
 
 app.listen(port, () => {
-    console.log(`listening on port ${port}`)
-})
+  console.log(`listening on port ${port}`);
+});
